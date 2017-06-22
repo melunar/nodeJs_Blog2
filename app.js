@@ -5,6 +5,7 @@
 var express = require("express");
 var swig = require("swig");//加载模板引擎
 var mongoose = require("mongoose");
+var bodyparser = require("body-parser"); //请求解析
 
 //创建app应用 => http.createServer()
 var app = express();
@@ -22,6 +23,8 @@ app.set("view engine", "html");
 //模板引擎设置 取消模板缓存机制 实现热更新效果
 swig.setDefaults({cache: false});
 
+//bodyParse设置 给request参数添加body属性 获取请求参数 response参数添加json方法相应请求
+app.use(bodyparser.urlencoded());
 
 app.use("/admin", require("./routers/admin"));
 app.use("/api", require("./routers/api"));
@@ -37,12 +40,14 @@ app.use("/", require("./routers/main"));
     res.setHeader("content-type", "text/css"); //设置请求文件类型 默认为text/html
     res.send("body {color: red;}");
 });*/
-mongoose.connect("mongodb://localhost:27017/blog",function(err) {
+mongoose.connect("mongodb://localhost:27018/blog",function(err) {
 	if(err) {
 		console.log("mongo链接失败");
 	} else {
 		console.log("mongo链接OK");
+		//监听端口
+		app.listen(9009);
+		console.log("listen on localhost:9009...");
 	}
 });
-//监听端口
-app.listen(9009);
+
