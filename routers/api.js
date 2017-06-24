@@ -17,7 +17,7 @@ router.use(function(req, res, next) {
 });
 
 
-//监听 /api/user
+//监听 /api/user 注册
 router.post("/user/register", function(req, res, next) {
 	//console.log(req.body);
 
@@ -49,10 +49,33 @@ router.post("/user/register", function(req, res, next) {
 			resBody.data = newUserInfo;
 			res.json(resBody);
 		});
-
-
 	}
-
+});
+//监听 /api/user 登录
+router.post("/user/login", function(req, res, next) {
+	if(req.body.username === "" || req.body.password === "") {
+		resBody.code = 500;
+		resBody.message = "用户名密码不能为空";
+		res.json(resBody);
+	} else {
+		var username = req.body.username;
+		var password = req.body.password;
+		// <http://mongoosejs.com/docs/api.html#model_Model.findOne> | Finds one document.
+		User.findOne({
+			username: username,
+			password: password
+		}).then(function(userInfo) {
+			if(!userInfo) {
+				resBody.code = 400;
+				resBody.message = "未注册的用户或密码错误";
+				res.json(resBody);
+				return;
+			}
+			resBody.message = "登录成功";
+			resBody.data = userInfo;
+			res.json(resBody);
+		});
+	}
 });
 
 module.exports = router;

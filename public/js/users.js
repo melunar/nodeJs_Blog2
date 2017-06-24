@@ -24,6 +24,28 @@ $(function() {
 			}
 		});
 	});
+	$(".login-box .login").on("click", function() {
+		$.ajax({
+			type: "post",
+			url: "/api/user/login/",
+			data: {
+				username: $(".login-box .username").val(),
+				password: $(".login-box .password").val()
+			},
+			dataType: "json",
+			success: function(result) {
+				console.log(result);
+				if(result.code === 200) {
+					$(".register-box").hide();
+					$(".login-box").hide();
+					$(".api-result-box").html("");
+					$(".userinfo-box").show().find(".minename").html(result.data.username);
+				} else {
+					alert(result.message);
+				}
+			}
+		});
+	});
 
 	$(".go-register-box").on("click", function() {
 		$(".register-box").show();
