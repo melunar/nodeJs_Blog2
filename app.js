@@ -40,6 +40,7 @@ app.use("/", require("./routers/main"));
     res.setHeader("content-type", "text/css"); //设置请求文件类型 默认为text/html
     res.send("body {color: red;}");
 });*/
+//链接blog数据库 blog允许不存在当操作表结构时自动创建
 mongoose.connect("mongodb://localhost:27018/blog",function(err) {
 	if(err) {
 		console.log("mongo链接失败");
