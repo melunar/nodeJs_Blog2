@@ -5,9 +5,12 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../models/User.js");
+//var Cookies = require("cookies");
 
 var resBody = {};
+
 router.use(function(req, res, next) {
+	//req.cookies = new Cookies();
 	resBody = {
 		code: 200,
 		message: "",
@@ -73,9 +76,27 @@ router.post("/user/login", function(req, res, next) {
 			}
 			resBody.message = "登录成功";
 			resBody.data = userInfo;
+			//设置cookie
+			try {
+				req.cookies.set("userInfo", JSON.stringify({
+					_id: userInfo._id,
+					username: userInfo.username
+				}));
+			} catch(r) {
+				console.log(r.toString())
+			}
+
 			res.json(resBody);
 		});
 	}
+});
+//监听 /api/user 登出
+router.get("/user/logout", function(req, res, next) {
+	req.cookies.set("userInfo", null);
+	resBody.message = "登出成功";
+	resBody.data = {};
+	res.json(resBody);
+
 });
 
 module.exports = router;

@@ -36,10 +36,27 @@ $(function() {
 			success: function(result) {
 				console.log(result);
 				if(result.code === 200) {
-					$(".register-box").hide();
+					/*$(".register-box").hide();
 					$(".login-box").hide();
 					$(".api-result-box").html("");
-					$(".userinfo-box").show().find(".minename").html(result.data.username);
+					$(".userinfo-box").show().find(".minename").html(result.data.username);*/
+					window.location.reload();
+				} else {
+					alert(result.message);
+				}
+			}
+		});
+	});
+	$("#logout").on("click", function() {
+		$.ajax({
+			type: "get",
+			url: "/api/user/logout/",
+			data: {},
+			dataType: "json",
+			success: function(result) {
+				console.log(result);
+				if(result.code === 200) {
+					window.location.reload();
 				} else {
 					alert(result.message);
 				}

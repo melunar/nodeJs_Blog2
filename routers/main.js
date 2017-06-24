@@ -7,7 +7,8 @@ var router = express.Router();
 
 //监听 /
 router.get("/", function(req, res, next) {
-	res.render("index");
+	var data = { userInfo: req.userInfo };
+	res.render("index", data); //req.userInfo app.js定义了
 });
 
 module.exports = router;

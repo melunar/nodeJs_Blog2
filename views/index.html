@@ -8,21 +8,24 @@
     <script src="/public/js/users.js"></script>
 </head>
 <body>
-    <div class="register-box" style="display: none">
-        <input type="text" class="username" name="username" placeholder="用户名"> <br>
-        <input type="password" class="password" name="password" placeholder="密码"> <br>
-        <input type="submit" class="register" value="注册"> &nbsp;
-        <a href="javascript:" class="go-login-box">登录</a>
+    {% if userInfo._id %}
+    <div class="userinfo-box">欢迎 <i class="minename">{{ userInfo.username }}</i> 登录我的博客 &nbsp;
+        <a href="javascript:;" id="logout">退出</a>
     </div>
+    {% else %}
     <div class="login-box">
         <input type="text" class="username" placeholder="用户名"> <br>
         <input type="password" class="password" placeholder="密码"> <br>
         <input type="submit" class="login" value="登录">&nbsp;
         <a href="javascript:" class="go-register-box">去注册</a>
     </div>
-    <div style="display: none" class="userinfo-box">欢迎 <i class="minename"></i> 登录我的博客 &nbsp;
-        <a href="javascript:;" class="logout">退出</a>
+    <div class="register-box" style="display: none">
+        <input type="text" class="username" name="username" placeholder="用户名"> <br>
+        <input type="password" class="password" name="password" placeholder="密码"> <br>
+        <input type="submit" class="register" value="注册"> &nbsp;
+        <a href="javascript:" class="go-login-box">登录</a>
     </div>
+    {%endif%}
     <div class="api-result-box"></div>
 </body>
 </html>

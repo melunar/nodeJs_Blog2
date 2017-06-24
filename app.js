@@ -6,6 +6,7 @@ var express = require("express");
 var swig = require("swig");//加载模板引擎
 var mongoose = require("mongoose");
 var bodyparser = require("body-parser"); //请求解析
+var Cookies = require("cookies");
 
 //创建app应用 => http.createServer()
 var app = express();
@@ -24,7 +25,24 @@ app.set("view engine", "html");
 swig.setDefaults({cache: false});
 
 //bodyParse设置 给request参数添加body属性 获取请求参数 response参数添加json方法相应请求
-app.use(bodyparser.urlencoded());
+app.use(bodyparser.urlencoded({extended: true}));
+
+//设置全局cookies
+app.use(function(req, res, next) {
+	req.cookies = new Cookies(req, res); //注意构造函数必须传入这两个参数！！！
+
+	var userInfo = req.cookies.get("userInfo");
+	req.userInfo = {};
+	if(userInfo) {
+		try {
+			userInfo = JSON.parse(userInfo);
+			req.userInfo = userInfo;
+		} catch(e) { console.log(e.toString()); }
+	}
+	//console.log(userInfo);
+
+	next();
+});
 
 app.use("/admin", require("./routers/admin"));
 app.use("/api", require("./routers/api"));
