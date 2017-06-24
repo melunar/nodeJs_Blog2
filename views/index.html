@@ -9,7 +9,9 @@
 </head>
 <body>
     {% if userInfo._id %}
-    <div class="userinfo-box">欢迎 <i class="minename">{{ userInfo.username }}</i> 登录我的博客 &nbsp;
+    <div class="userinfo-box">欢迎
+        {% if !userInfo.isAdmin %}<i> 用户： {% else %}</i> <i> 管理员： </i> {% endif %}
+        <i class="minename">{{ userInfo.username }}</i> 登录我的博客 &nbsp;
         <a href="javascript:;" id="logout">退出</a>
     </div>
     {% else %}
@@ -25,7 +27,7 @@
         <input type="submit" class="register" value="注册"> &nbsp;
         <a href="javascript:" class="go-login-box">登录</a>
     </div>
-    {%endif%}
+    {% endif %}
     <div class="api-result-box"></div>
 </body>
 </html>

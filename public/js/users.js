@@ -3,6 +3,9 @@
  */
 $(function() {
 
+	/**
+	 * 注册
+	 */
 	$(".register-box .register").on("click", function() {
 		$.ajax({
 			type: "post",
@@ -24,6 +27,9 @@ $(function() {
 			}
 		});
 	});
+	/**
+	 * 登陆
+	 */
 	$(".login-box .login").on("click", function() {
 		$.ajax({
 			type: "post",
@@ -47,6 +53,9 @@ $(function() {
 			}
 		});
 	});
+	/**
+	 * 登出
+	 */
 	$("#logout").on("click", function() {
 		$.ajax({
 			type: "get",
@@ -63,7 +72,7 @@ $(function() {
 			}
 		});
 	});
-
+	//登陆注册切换
 	$(".go-register-box").on("click", function() {
 		$(".register-box").show();
 		$(".login-box").hide();

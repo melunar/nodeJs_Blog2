@@ -8,6 +8,8 @@ var mongoose = require("mongoose");
 var bodyparser = require("body-parser"); //请求解析
 var Cookies = require("cookies");
 
+var User = require("./models/User.js");
+
 //创建app应用 => http.createServer()
 var app = express();
 
@@ -37,11 +39,20 @@ app.use(function(req, res, next) {
 		try {
 			userInfo = JSON.parse(userInfo);
 			req.userInfo = userInfo;
-		} catch(e) { console.log(e.toString()); }
-	}
-	//console.log(userInfo);
 
-	next();
+			//判断是否是管理员用户
+			User.findById(req.userInfo._id).then(function(userInfo) {
+				req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
+				console.log(userInfo);
+				next();
+			});
+		} catch(e) { console.log("error" + e.toString()); next(); }
+	} else {
+		next();
+	}
+
+
+	//next();
 });
 
 app.use("/admin", require("./routers/admin"));

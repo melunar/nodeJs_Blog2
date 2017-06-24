@@ -80,7 +80,8 @@ router.post("/user/login", function(req, res, next) {
 			try {
 				req.cookies.set("userInfo", JSON.stringify({
 					_id: userInfo._id,
-					username: userInfo.username
+					username: userInfo.username,
+					isAdmin: Boolean(userInfo.isAdmin)
 				}));
 			} catch(r) {
 				console.log(r.toString())
