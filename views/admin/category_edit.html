@@ -1,0 +1,18 @@
+{% extends './layout.html' %}
+
+{% block main %}
+<div>
+	<br>
+	后台管理 / 编辑分类 - {{ category.name }}
+	<br><br>
+	<form action="/admin/category/edit" method="post">
+		<input type="hidden" name="id" value="{{ category._id.toString() }}">
+		<input type="text" name="name" value="{{ category.name }}" placeholder="分类名称">
+		<br>
+		<br>
+		<input type="submit" value="修改">
+	</form>
+</div>
+<br>
+{% endblock %}
+

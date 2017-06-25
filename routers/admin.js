@@ -71,7 +71,7 @@ router.get("/category", function(req, res, next) {
 	if(userInfo.isAdmin) {
 		Category.find().then(function(categories) {
 			if(categories) {
-				console.log(categories)
+				//console.log(categories)
 				res.render("admin/category_index", {
 					userInfo: userInfo,
 					categories: categories,
@@ -117,5 +117,81 @@ router.post("/category/add", function(req, res, next) {
 	}
 });
 
+//进入编辑分类页面
+router.get("/category/edit", function(req, res, next) {
+	var id = req.query.id || "";
+	Category.findOne({_id: id}).then(function(cat) {
+		if(!cat) {
+			res.render("admin/error",{
+				userInfo: req.userInfo,
+				message: "无效删除项",
+				url: "/admin/category"
+			});
+			return Promise.reject();
+		}
+		//到编辑页
+		res.render("admin/category_edit",{
+			category: cat,
+			userInfo: req.userInfo
+		});
+	});
+});
 
+//编辑分类
+router.post("/category/edit", function(req, res, next) {
+	var id = req.body.id || "",
+		name = req.body.name || "";
+	Category.findOne({_id: id}).then(function(cat) {
+		if(!cat) {
+			res.render("admin/error",{
+				userInfo: req.userInfo,
+				message: "不存在的分类",
+				url: "/admin/category"
+			});
+			//return;
+			return Promise.reject();
+		} else {
+			if(name === cat.name) {//没有修改
+				res.render("admin/success",{
+					userInfo: req.userInfo,
+					message: "修改成功",
+					url: "/admin/category"
+				});
+				return Promise.reject();
+			} else {
+				//var car = new Category.findOne({_id: {$ne: id}, name: name});
+				//console.log(car)
+				return Category.findOne({/*_id: id,*/name: name }); //根据名称查找 判断是否有重名的
+			}
+		}
+	}).then(function(resCat) {
+		if(resCat) {//是否名称冲突
+			res.render("admin/error",{
+				userInfo: req.userInfo,
+				message: "存在同名分类",
+				url: "/admin/category"
+			});
+			return Promise.reject();
+		}
+		return Category.update({_id: id},{name: name});
+	}).then(function() {
+		res.render("admin/success",{
+			userInfo: req.userInfo,
+			message: "修改成功",
+			url: "/admin/category"
+		});
+	});
+});
+
+//删除分类
+router.get("/category/delete", function(req, res, next) {
+	var id = req.query.id || "";
+	Category.remove({_id: id}).then(function() {
+		res.render("admin/success",{
+			userInfo: req.userInfo,
+			message: "删除成功",
+			url: "/admin/category"
+		});
+	});
+});
 module.exports = router;
