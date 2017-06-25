@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
 			//判断是否是管理员用户
 			User.findById(req.userInfo._id).then(function(userInfo) {
 				req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
-				console.log(userInfo);
+				//console.log(userInfo);
 				next();
 			});
 		} catch(e) { console.log("error" + e.toString()); next(); }

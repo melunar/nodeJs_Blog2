@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>后台管理</title>
+</head>
+<body>
+<a href="/admin" style="font-size: 23px;">后台管理</a>
+<a href="/admin/user">用户管理</a>
+<a href="#">文章管理</a>
+<a href="#">评论管理</a>
+
+<div style="display: inline-block; float: right;">
+	<span class="color: #e00;">{{ userInfo.username }}</span>
+	<a href="#">退出</a>
+</div>
+<br>
+<hr>
+<div class="container">
+	{% block main %} {% endblock %}
+</div>
+</body>
+</html>

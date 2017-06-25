@@ -10,7 +10,7 @@
 <body>
     {% if userInfo._id %}
     <div class="userinfo-box">欢迎
-        {% if !userInfo.isAdmin %}<i> 用户： {% else %}</i> <i> 管理员： </i> {% endif %}
+        {% if !userInfo.isAdmin %}<i> 用户： {% else %}</i> <i> 管理员（<a href="/admin">进入后台管理</a>）： </i> {% endif %}
         <i class="minename">{{ userInfo.username }}</i> 登录我的博客 &nbsp;
         <a href="javascript:;" id="logout">退出</a>
     </div>
