@@ -1,0 +1,13 @@
+{% extends './layout.html' %}
+
+{% block main %}
+<div>
+	<br>
+	后台管理 / 错误提示
+	<br><br>
+	<span style="color: red">操作失败：{{ message }}</span>
+	{% if url %} <a href="{{ url }}">返回上一步操作</a> {% else %} <a href="javascript:window.history.back()">返回</a> {% endif %}
+</div>
+<br>
+{% endblock %}
+

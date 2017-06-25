@@ -1,0 +1,25 @@
+{% extends './layout.html' %}
+
+{% block main %}
+<div>
+	<br>
+	后台管理 / 分类列表
+	<br><br>
+	<table width="100%" border="1">
+		<tr style="font-weight: 600">
+			<td>ID</td>
+			<td>名称</td>
+		</tr>
+		{% for category in categories %}
+		<tr>
+			<td>{{ category._id.toString() }}</td>
+			<td>{{ category.name }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+<br>
+<a href="/admin/category/add">添加</a>
+<!--{% include "page.html" %}-->
+{% endblock %}
+

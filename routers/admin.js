@@ -5,6 +5,18 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../models/User.js");
+var Category = require("../models/Category.js");
+
+var resBody = {};
+
+router.use(function(req, res, next) {
+	resBody = {
+		code: 200,
+		message: "",
+		data: {}
+	};
+	next();
+});
 
 //监听 /admin/ 主页
 router.get("/", function(req, res, next) {
@@ -32,8 +44,6 @@ router.get("/user", function(req, res, next) {
 			//取值 （0 - maxPage）
 			pages = Math.ceil(count / limit);
 			page = page < 1 ? 1 : (page > pages ? pages : page);
-			//page = Math.min(page, pages);
-			//page = Math.max(page, 1);
 			skip = (page - 1) * limit;
 
 			User.find().limit(limit).skip(skip).then(function(users) {
@@ -54,5 +64,58 @@ router.get("/user", function(req, res, next) {
 	}
 	else res.send("非管理员禁止访问");
 });
+
+//分类管理首页
+router.get("/category", function(req, res, next) {
+	var userInfo = req.userInfo;
+	if(userInfo.isAdmin) {
+		Category.find().then(function(categories) {
+			if(categories) {
+				console.log(categories)
+				res.render("admin/category_index", {
+					userInfo: userInfo,
+					categories: categories,
+				});
+			}
+		});
+	}
+	else res.send("非管理员禁止访问");
+});
+
+//添加分类管理页
+router.get("/category/add", function(req, res, next) {
+	var userInfo = req.userInfo;
+	if(userInfo.isAdmin) {
+		//添加分页
+		res.render("admin/category_add", {userInfo: userInfo});
+	}
+	else res.send("非管理员禁止访问");
+});
+//添加分类
+router.post("/category/add", function(req, res, next) {
+	var name = req.body.name,
+		userInfo = req.userInfo;
+	if(name === "") {
+		resBody.code = 500;
+		resBody.message = "名称不能为空";
+		res.render("admin/error", {url: "/admin/category/add", message: resBody.message, userInfo: userInfo});
+		//res.json(resBody);
+	} else {
+		Category.findOne({name: name}).then(function(cat) {
+			if(cat) {
+				resBody.message = "'" + name + "'" + "分类已存在";
+				res.render("admin/error", {url: "/admin/category/add", message: resBody.message,userInfo: userInfo});
+				return Promise.reject();
+			}
+			return new Category({ name: name }).save();
+		}).then(function(newCat) {
+			resBody.message = "'" + name + "'" + "分类添加成功";
+			resBody.data = newCat;
+			//res.json(resBody);
+			res.render("admin/success", {url: "/admin/category", message: resBody.message, userInfo: userInfo});
+		});
+	}
+});
+
 
 module.exports = router;
