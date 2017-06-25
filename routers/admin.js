@@ -6,6 +6,7 @@ var express = require("express");
 var router = express.Router();
 var User = require("../models/User.js");
 var Category = require("../models/Category.js");
+var Content = require("../models/Content.js");
 
 var resBody = {};
 
@@ -194,4 +195,59 @@ router.get("/category/delete", function(req, res, next) {
 		});
 	});
 });
+//文章列表展示页
+router.get("/content", function(req, res, next) {
+	// join 关联属性/键 !!!
+	Content.find().sort({_id: 1}).populate(["category"]).then(function(contents) {
+		//console.log(contents) //[{...category: { _id: 594f5cdfc816a1569834d900, name: 'CSS', __v: 0 },...}]
+		res.render("admin/content_index", {
+			userInfo: req.userInfo,
+			contents: contents
+		});
+	});
+});
+//文章添加页
+router.get("/content/add", function(req, res, next) {
+	Category.find().sort({_id: -1}).then(function(cats) {
+		res.render("admin/content_add", {
+			userInfo: req.userInfo,
+			categories: cats
+		});
+	});
+
+});
+//文章添加
+router.post("/content/add", function(req, res, next) {
+	console.log(req.body);
+	var cat = req.body.category,
+		title = req.body.title,
+		description = req.body.description,
+		content = req.body.content;
+	if(cat === "" || title === "" || description === "" || content === "") {
+		resBody.code = 500;
+		resBody.message = "博客添加应全部填写！";
+		resBody.data = req.body;
+		res.render("admin/error", {
+			url: "/admin/content/add",
+			message: resBody.message,
+			userInfo: req.userInfo
+		});
+		return;
+	}
+	//保存
+	new Content({
+		title: title,
+		category: cat,
+		description: description,
+		content: content
+	}).save().then(function(newContent) {
+		res.render("admin/success", {
+			url: "/admin/content",
+			message: "添加博客成功！",
+			userInfo: req.userInfo
+		});
+	});
+});
+
 module.exports = router;
+
