@@ -7,6 +7,7 @@ var swig = require("swig");//加载模板引擎
 var mongoose = require("mongoose");
 var bodyparser = require("body-parser"); //请求解析
 var Cookies = require("cookies");
+var MarkDown = require("markdown");
 
 var User = require("./models/User.js");
 

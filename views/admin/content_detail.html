@@ -13,7 +13,16 @@
 			(添加时间: {{ content.addTime | date("Y-m-d H:i:s", -8*60) }})
 			<a href="/admin/content">返回</a></h6>
 		<p>简介: ｛{{ content.description }}｝</p>
-		<p style="border: 1px dashed #888; padding: 10px 10px 10px 0; text-indent: 1em;">内容: {{ content.content }}</p>
+		<div id="ContentDetail">
+				{{ content.content | escape("html") }}
+		</div>
+	<script>
+		setTimeout(function() {
+			debugger
+			var inner =  $("#ContentDetail").text();
+			$("#ContentDetail").empty().html(inner);
+		},100);
+	</script>
 </div>
 <br>
 {% endblock %}

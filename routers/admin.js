@@ -7,6 +7,7 @@ var router = express.Router();
 var User = require("../models/User.js");
 var Category = require("../models/Category.js");
 var Content = require("../models/Content.js");
+var MarkDown = require("markdown").markdown;
 
 var resBody = {};
 
@@ -222,7 +223,7 @@ router.post("/content/add", function(req, res, next) {
 	var cat = req.body.category,
 		title = req.body.title,
 		description = req.body.description,
-		content = req.body.content;
+		content = MarkDown.toHTML(req.body.content);
 	if(cat === "" || title === "" || description === "" || content === "") {
 		resBody.code = 500;
 		resBody.message = "博客添加应全部填写！";
@@ -262,7 +263,7 @@ router.get("/content/delete", function(req, res, next) {
 router.get("/content/detail", function(req, res, next) {
 	var id = req.query.id || "";
 	Content.findOne({_id: id}).populate(["category","user"]).then(function(content) {
-		//console.log(content)
+		console.log(content)
 		if(content) {
 			res.render("admin/content_detail", {
 				userInfo: req.userInfo,
