@@ -10,6 +10,9 @@
 			<td>ID</td>
 			<td>标题</td>
 			<td>分类</td>
+			<td>作者</td>
+			<td>添加时间</td>
+			<td>阅读量</td>
 			<td>简介</td>
 			<td>操作</td>
 		</tr>
@@ -18,10 +21,14 @@
 			<td>{{ content._id.toString() }}</td>
 			<td>{{ content.title }}</td>
 			<td>{{ content.category.name }}</td>
+			<td>{{ content.user.username }}</td>
+			<td>{{ content.addTime | date("Y-m-d H:i:s", -8*60) }}</td> <!-- data过滤器(格式,偏移量) -->
+			<td>{{ content.views }}</td>
 			<td>{{ content.description }}</td>
 			<td>
 				<a href="#" style="color: gray; cursor: not-allowed">编辑</a><!-- /admin/content/edit?id={{content._id.toString()}} -->
-				<a href="#" style="color: gray; cursor: not-allowed">删除</a><!-- /admin/content/delete?id={{content._id.toString()}} -->
+				<a href="/admin/content/delete?id={{content._id.toString()}}" style="">删除</a>
+				<a href="/admin/content/detail?id={{content._id.toString()}}" style="">查看</a>
 			</td>
 		</tr>
 		{% endfor %}

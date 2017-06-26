@@ -198,7 +198,7 @@ router.get("/category/delete", function(req, res, next) {
 //文章列表展示页
 router.get("/content", function(req, res, next) {
 	// join 关联属性/键 !!!
-	Content.find().sort({_id: 1}).populate(["category"]).then(function(contents) {
+	Content.find().sort({_id: 1}).populate(["category","user"]).then(function(contents) {
 		//console.log(contents) //[{...category: { _id: 594f5cdfc816a1569834d900, name: 'CSS', __v: 0 },...}]
 		res.render("admin/content_index", {
 			userInfo: req.userInfo,
@@ -218,7 +218,7 @@ router.get("/content/add", function(req, res, next) {
 });
 //文章添加
 router.post("/content/add", function(req, res, next) {
-	console.log(req.body);
+	//console.log(req.body);
 	var cat = req.body.category,
 		title = req.body.title,
 		description = req.body.description,
@@ -239,13 +239,42 @@ router.post("/content/add", function(req, res, next) {
 		title: title,
 		category: cat,
 		description: description,
-		content: content
+		content: content,
+		user: req.userInfo._id.toString()
 	}).save().then(function(newContent) {
 		res.render("admin/success", {
 			url: "/admin/content",
 			message: "添加博客成功！",
 			userInfo: req.userInfo
 		});
+	});
+});
+router.get("/content/delete", function(req, res, next) {
+	var id = req.query.id || "";
+	Content.remove({_id: id}).then(function() {
+		res.render("admin/success", {
+			userInfo: req.userInfo,
+			url: "/admin/content",
+			message: "删除博客成功"
+		});
+	});
+});
+router.get("/content/detail", function(req, res, next) {
+	var id = req.query.id || "";
+	Content.findOne({_id: id}).populate(["category","user"]).then(function(content) {
+		//console.log(content)
+		if(content) {
+			res.render("admin/content_detail", {
+				userInfo: req.userInfo,
+				content: content
+			});
+		} else {
+			res.render("admin/error", {
+				userInfo: req.userInfo,
+				url: "/admin/content",
+				message: "博客查看失败"
+			});
+		}
 	});
 });
 
