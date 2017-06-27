@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="/public/css/main.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/users.js"></script>
-    <!--<link rel="stylesheet" href="/public/css/theme-default.css">-->
-    <!--<link href="http://github.com/yrgoldteeth/darkdowncss/raw/master/darkdown.css" rel="stylesheet" />-->
+    <link href="/public/css/theme-markdowncss_github_style_blue_by_jwsky_preview.css" rel="stylesheet" />
 </head>
 <body>
 <div class="header">
@@ -19,7 +18,36 @@
     </ul>
 </div>
 <div class="content">
-    <div class="major">文章</div>
+    <div class="major">
+        {% for content in contents %}
+        <div style="padding: 5px 10px; border: dotted #eee 2px;">
+            <h2 style="text-align: center">{{ content.title }}</h2>
+           <div><h6 style="display: inline-block; margin: 4px 0">
+               (分类: {{ content.category.name }})
+               (作者: {{ content.user.username }})
+               (阅读量: <b>{{ content.views }}</b> 次)
+               (时间: {{ content.addTime | date("Y-m-d H:i:s", -8*60) }})
+               (评论: <b>101</b> 次)
+           </h6></div>
+            <p style="margin: 2px 0"> {{ content.description }} </p>
+            <a href="/api/content/detail" style="display: inline-block; float: left; margin-left: 0px;">全文</a>
+        </div>
+        {% endfor %}
+        <div class="pagination" style="height: 60px; line-height: 60px; padding: 0 40px 0 10px; text-align: center; margin-top: 15px; background-color: #efefef">
+            {% if page <= 1 %}
+            <a href="javascript:;" style="float: left">没有上一页</a>
+            {% else %}
+            <a href="/?page={{page-1}}" style="float: left">上一页</a>
+            {% endif %}
+            <span>{{ page }}/{{ pages }} (共{{ count }}篇)</span>
+            {% if page >= pages %}
+            <a href="javascript:;" style="float: right">没有下一页</a>
+            {% else %}
+            <a href="/?page={{page+1}}" style="float: right">下一页</a>
+            {% endif %}
+        </div>
+
+    </div>
     <div class="user">
         {% if userInfo._id %}
         <div class="userinfo-box">欢迎

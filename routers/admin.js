@@ -199,7 +199,7 @@ router.get("/category/delete", function(req, res, next) {
 //文章列表展示页
 router.get("/content", function(req, res, next) {
 	// join 关联属性/键 !!!
-	Content.find().sort({_id: 1}).populate(["category","user"]).then(function(contents) {
+	Content.find().sort({_id: 1}).populate(["category","user"]).sort({"addTime": -1}).then(function(contents) {
 		//console.log(contents) //[{...category: { _id: 594f5cdfc816a1569834d900, name: 'CSS', __v: 0 },...}]
 		res.render("admin/content_index", {
 			userInfo: req.userInfo,
