@@ -29,5 +29,9 @@ module.exports = new mongoose.Schema({
 	content: {//内容
 		type: String,
 		default: ""
+	},
+	conments: {//评论
+		type: Array,
+		default: []
 	}
 });

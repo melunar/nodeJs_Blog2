@@ -27,9 +27,30 @@
                (作者: {{ content.user.username }})
                (阅读量: <b>{{ content.views }}</b> 次)
                (时间: {{ content.addTime | date("Y-m-d H:i:s", -8*60) }})
-               (评论: <b>101</b> 次)
+               (评论: <b>{{ content.views }}</b> 次)
             </h6></div>
             <div id="MainArticle"> {{ content.content }} </div>
+            <hr />
+            一共{{ content.conments.length }}条评论
+            <br /> <br />
+            <div class="conment-post">
+                <form action="/api/conment/post" method="post">
+                    <textarea name="content" id="" cols="100" rows="6" placeholder="请输入评论"></textarea>
+                    <br />
+                    <input type="hidden" value="{{ content._id.toString() }}" name="contentId">
+                    {% if userInfo && userInfo.username %}
+                        <input type="submit" value="提交" />
+                    {% else %}
+                        <i style="color: red">未登录</i>
+                        <input type="submit" disabled value="提交" />
+                    {% endif %}
+                </form>
+            </div>
+            <div class="conments" style="margin: 5px -5px;">
+                {% for conment in content.conments.reverse() %}
+                <p>{{ conment.username }} ({{ conment.postTime | date("Y-m-d H:i:s", -8*60) }}): {{ conment.content }}</p>
+                {% endfor %}
+            </div>
         </div>
         <script>
             setTimeout(function() {

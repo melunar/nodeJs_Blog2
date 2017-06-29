@@ -5,6 +5,8 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../models/User.js");
+var Content = require("../models/Content.js");
+var Category = require("../models/Category.js");
 //var Cookies = require("cookies");
 
 var resBody = {};
@@ -97,6 +99,33 @@ router.get("/user/logout", function(req, res, next) {
 	resBody.message = "登出成功";
 	resBody.data = {};
 	res.json(resBody);
+
+});
+//添加评论
+router.post("/conment/post", function(req, res, next) {
+	var contentId = req.body.contentId;
+	var postData = {
+		username: req.userInfo.username,
+		postTime: new Date(),
+		content: req.body.content
+	};
+	Content.findOne({_id: contentId}).then(function(content) {
+		content.conments.push(postData);
+		return content.save();
+	}).then(function(newContent) {
+		var data = {content: newContent, userInfo: req.userInfo};
+		Category.find().sort({_id: -1}).then(function(cats) {
+			console.log(data)
+			data.categories = cats;
+			res.render("main/view.html", data);
+		});
+
+		//这里应该使用ajax请求 TODO
+		/*resBody.message = "评论成功";
+		resBody.data = postData;
+		res.json(postData);*/
+		//window.location.reload();
+	});
 
 });
 

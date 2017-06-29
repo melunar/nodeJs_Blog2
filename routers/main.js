@@ -47,19 +47,16 @@ router.get("/", function(req, res, next) {
 		data.userInfo = req.userInfo;
 		res.render("main/index", data);
 	});
-
-
-
 });
 
 router.get("/view",function(req, res, next) {
 	var _id = req.query.contentId || "";
-	console.log(_id)
+	//console.log(_id)
 	Content.findOne({_id: _id}).populate(["category", "user"]).then(function(content) {
 		data.content = content;
 		//console.log(content)
 		content.views++;
-		content.save();
+		content.save(); //重新保存查看过的文章
 		res.render("main/view", data);
 	});
 });
