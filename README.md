@@ -1,7 +1,11 @@
 # nodeJs_Blog2
 
-> nodeJs 博客系统实战开发
-
+> nodeJs 博客系统实战开发<http://study.163.com/course/courseMain.htm?courseId=1003675016>
+ 
+## 环境
+node: v6.9.5  
+mongodb: v3.2.7
+ 
 ## 安装依赖  
 `cnpm install express --save`  
 `cnpm install body-parser --save` :解析post请求数据  
