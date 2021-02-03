@@ -15,7 +15,5 @@ mongodb: v3.2.7
 `cnpm install swig --save` :模板解析引擎    
 
 ## mongodb
-bin下命令：`mongod --dbpath=E:\\workspace\\github_melunar\\nodeJs_Blog2\\db --port=27018` 启动服务  
-推荐使用`Robomongo`软件链接服务（不推荐使用默认27017端口）   
-`mongod --dbpath=E:\\workspace\\_posa_git\\melunar\\nodeJs_Blog2\\db --port=27018`
+> 在服务器上 `121.37.158.0:27017` 启动：`mongod --dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --config /etc/mongo.conf --fork` 启动配置
 

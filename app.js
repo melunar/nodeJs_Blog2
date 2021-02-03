@@ -71,14 +71,29 @@ app.use("/", require("./routers/main"));
     res.send("body {color: red;}");
 });*/
 //链接blog数据库 blog允许不存在当操作表结构时自动创建
-mongoose.connect("mongodb://localhost:27017/blog",function(err) {
-	if(err) {
-		console.log("mongo链接失败");
-	} else {
-		console.log("mongo链接OK");
-		//监听端口
-		app.listen(9009);
-		console.log("listen on localhost:9009...");
-	}
+mongoose.connect("mongodb://121.37.158.0:27017/blog2_test", {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useFindAndModify: false,
+	useCreateIndex: true
 });
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'mongodb connection error:'))
+db.once('open', function() {
+	// we're connected!
+	console.log("mongo链接OK");
+	//监听端口
+	app.listen(9009);
+	console.log("listen on localhost:9009...");
+})
+// mongoose.connect("mongodb://121.37.158.0:27017/blog2_test",function(err) {
+// 	if(err) {
+// 		console.log("mongo链接失败", JSON.stringify(err));
+// 	} else {
+// 		console.log("mongo链接OK");
+// 		//监听端口
+// 		app.listen(9009);
+// 		console.log("listen on localhost:9009...");
+// 	}
+// });
 
