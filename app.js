@@ -83,7 +83,7 @@ db.once('open', function() {
 	// we're connected!
 	console.log("mongo链接OK");
 	//监听端口
-	app.listen(9009);
+	app.listen(3001);
 	console.log("listen on localhost:9009...");
 })
 // mongoose.connect("mongodb://121.37.158.0:27017/blog2_test",function(err) {
